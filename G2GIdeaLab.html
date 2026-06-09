@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Idea Lab — Rock 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#001E2B; --bg-2:#00141d; --panel:#0a2a38; --panel-2:#0e3343;
+    --line:rgba(255,255,255,.10); --line-strong:rgba(255,255,255,.18);
+    --ink:#E8F3EF; --ink-dim:#8FB0AE; --ink-faint:#5f8482;
+    --green:#00ED64; --green-deep:#00684A; --green-soft:rgba(0,237,100,.14);
+    --amber:#FFC010; --radius:18px; --shadow:0 24px 60px -20px rgba(0,0,0,.65);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:
+      radial-gradient(1200px 700px at 78% -12%, rgba(0,237,100,.12), transparent 60%),
+      radial-gradient(900px 600px at -8% 110%, rgba(0,104,74,.22), transparent 55%),
+      var(--bg);
+    color:var(--ink);
+    font-family:'Hanken Grotesk',-apple-system,system-ui,sans-serif;
+    font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;
+    min-height:100vh;display:flex;flex-direction:column;align-items:center;
+    padding:clamp(16px,4vw,48px);
+  }
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.035;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+  .wrap{width:100%;max-width:760px;position:relative;z-index:1;flex:1;display:flex;flex-direction:column}
+
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--green)}
+  h1{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;line-height:1.02;letter-spacing:-.02em}
+  h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;letter-spacing:-.01em}
+
+  .btn{font-family:'Hanken Grotesk',sans-serif;font-weight:600;font-size:16px;border:none;border-radius:999px;padding:14px 26px;cursor:pointer;transition:transform .15s, box-shadow .15s, background .15s, color .15s, border-color .15s;display:inline-flex;align-items:center;justify-content:center;gap:9px}
+  .btn:active{transform:translateY(1px)}
+  .btn-primary{background:var(--green);color:#00231b;box-shadow:0 10px 30px -10px rgba(0,237,100,.6)}
+  .btn-primary:hover{box-shadow:0 14px 36px -10px rgba(0,237,100,.8);transform:translateY(-1px)}
+  .btn-primary:disabled{background:#1d4a44;color:#5f8482;cursor:not-allowed;box-shadow:none;transform:none}
+  .btn-ghost{background:transparent;color:var(--ink);border:1px solid var(--line-strong)}
+  .btn-ghost:hover{border-color:var(--green);color:var(--green)}
+  .btn-ghost:disabled{opacity:.35;cursor:not-allowed;border-color:var(--line)}
+
+  .card{background:linear-gradient(180deg,var(--panel),var(--panel-2));border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+
+  .screen{display:none;animation:rise .45s cubic-bezier(.2,.7,.2,1) both}
+  .screen.active{display:block}
+  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+  .brandline{display:flex;align-items:center;gap:10px;margin-bottom:26px}
+  .leaf{width:22px;height:22px;flex:none}
+  .brandline span{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-dim)}
+
+  .homelink{display:inline-flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-dim);background:none;border:none;cursor:pointer;padding:0;margin-bottom:22px}
+  .homelink:hover{color:var(--green)}
+
+  /* HOME */
+  #home{padding-top:clamp(8px,4vh,40px)}
+  #home h1{font-size:clamp(34px,7vw,58px);margin:14px 0 16px}
+  #home h1 em{font-style:normal;color:var(--green)}
+  #home .lede{font-size:clamp(17px,2.4vw,20px);color:var(--ink-dim);max-width:56ch;margin-bottom:34px}
+  .paths{display:grid;gap:18px}
+  @media(min-width:640px){.paths{grid-template-columns:1fr 1fr}}
+  .pathcard{text-align:left;cursor:pointer;border:1px solid var(--line-strong);border-radius:16px;padding:26px 24px 24px;background:linear-gradient(180deg,var(--panel),var(--panel-2));transition:transform .16s, border-color .16s, box-shadow .16s;display:flex;flex-direction:column;gap:12px;min-height:172px}
+  .pathcard:hover{transform:translateY(-3px);border-color:var(--green);box-shadow:0 18px 40px -18px rgba(0,237,100,.5)}
+  .pathcard .pcicon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:var(--green-soft);border:1px solid rgba(0,237,100,.3)}
+  .pathcard.alt .pcicon{background:rgba(255,192,16,.12);border-color:rgba(255,192,16,.3)}
+  .pathcard h3{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:700}
+  .pathcard p{color:var(--ink-dim);font-size:14.5px;line-height:1.5;flex:1}
+  .pathcard .go{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--green);display:flex;align-items:center;gap:7px}
+  .pathcard.alt .go{color:var(--amber)}
+
+  /* FORM (new idea) */
+  #newidea h2{font-size:clamp(28px,5vw,40px);margin-bottom:8px}
+  #newidea .sub{color:var(--ink-dim);margin-bottom:26px;max-width:54ch}
+  .field{margin-bottom:22px}
+  .field label{display:flex;justify-content:space-between;align-items:baseline;font-size:14px;color:var(--ink);font-weight:600;margin-bottom:9px}
+  .field .req{color:var(--amber);font-weight:400;font-size:12px;font-family:'JetBrains Mono',monospace}
+  .field .count{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ink-faint)}
+  .field .count.warn{color:var(--amber)}
+  .field input,.field textarea{width:100%;background:var(--bg-2);border:1px solid var(--line-strong);color:var(--ink);font-family:inherit;font-size:16px;border-radius:12px;padding:13px 16px;resize:vertical}
+  .field textarea{min-height:96px;line-height:1.5}
+  .field input:focus,.field textarea:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px var(--green-soft)}
+  .field .hint{font-size:13px;color:var(--ink-faint);margin-top:7px}
+  .form-err{color:#ff8a8a;font-size:14px;min-height:20px;margin-bottom:8px;font-family:'JetBrains Mono',monospace}
+  .form-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}
+
+  /* SCORE INTRO */
+  #scoreintro h1{font-size:clamp(30px,6vw,50px);margin:10px 0 16px}
+  #scoreintro h1 em{font-style:normal;color:var(--green)}
+  #scoreintro .lede{font-size:clamp(16px,2.3vw,19px);color:var(--ink-dim);max-width:60ch;margin-bottom:28px}
+  .scales{display:grid;gap:16px;margin:8px 0 28px}
+  @media(min-width:640px){.scales{grid-template-columns:1fr 1fr}}
+  .scale{padding:22px 22px 18px;border-radius:14px}
+  .scale .tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--green);font-weight:700}
+  .scale h3{font-family:'Bricolage Grotesque',sans-serif;font-size:21px;font-weight:700;margin:8px 0 14px}
+  .anchor{display:flex;gap:12px;align-items:baseline;padding:7px 0;border-top:1px solid var(--line)}
+  .anchor .num{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--ink);width:18px;flex:none}
+  .anchor .txt{color:var(--ink-dim);font-size:14.5px}
+  .reassure{display:flex;gap:11px;align-items:flex-start;color:var(--ink-dim);font-size:14.5px;background:var(--green-soft);border:1px solid rgba(0,237,100,.22);border-radius:12px;padding:14px 16px;margin-bottom:28px;max-width:62ch}
+  .reassure svg{flex:none;margin-top:2px}
+  .namebox{margin:0 0 24px}
+  .namebox label{display:block;font-size:14px;color:var(--ink-dim);margin-bottom:9px}
+  .namebox input{width:100%;max-width:340px;background:var(--bg-2);border:1px solid var(--line-strong);color:var(--ink);font-family:inherit;font-size:16px;border-radius:12px;padding:13px 16px}
+  .namebox input:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px var(--green-soft)}
+  .loadnote{font-size:13.5px;color:var(--ink-dim);margin-top:14px;font-family:'JetBrains Mono',monospace;min-height:18px}
+
+  /* SCORING */
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px}
+  .counter{font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.1em;color:var(--ink-dim)}
+  .counter b{color:var(--ink)}
+  .progress{height:6px;background:rgba(255,255,255,.08);border-radius:999px;overflow:hidden;margin-bottom:26px}
+  .progress > i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green-deep),var(--green));border-radius:999px;transition:width .4s cubic-bezier(.2,.7,.2,1)}
+  .idea{padding:clamp(22px,4vw,34px)}
+  .idea .kicker{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:12px}
+  .idea h2{font-size:clamp(24px,4.4vw,34px);margin-bottom:14px}
+  .idea .syn{color:var(--ink-dim);font-size:clamp(15.5px,2vw,17px);line-height:1.6;max-width:58ch}
+  .metric{margin-top:30px}
+  .metric .mhead{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:5px;flex-wrap:wrap}
+  .metric .mname{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:19px}
+  .metric .mname .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:9px;vertical-align:middle}
+  .metric.speed .dot{background:var(--green)}
+  .metric.impact .dot{background:var(--amber)}
+  .metric .pick{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--ink-dim);min-height:18px}
+  .metric .pick b{color:var(--ink)}
+  .metric .sub{color:var(--ink-faint);font-size:13.5px;margin-bottom:14px}
+  .scale-row{display:grid;grid-template-columns:repeat(10,1fr);gap:7px}
+  .sb{aspect-ratio:1/1;border-radius:11px;border:1px solid var(--line-strong);background:var(--bg-2);color:var(--ink-dim);font-family:'JetBrains Mono',monospace;font-weight:700;font-size:clamp(13px,2vw,16px);cursor:pointer;transition:transform .12s, background .12s, color .12s, border-color .12s, box-shadow .12s;display:flex;align-items:center;justify-content:center}
+  .sb:hover{border-color:var(--ink);color:var(--ink);transform:translateY(-2px)}
+  .metric.speed .sb.on{background:var(--green);color:#00231b;border-color:var(--green);box-shadow:0 8px 22px -8px rgba(0,237,100,.7);transform:translateY(-2px)}
+  .metric.impact .sb.on{background:var(--amber);color:#3a2a00;border-color:var(--amber);box-shadow:0 8px 22px -8px rgba(255,192,16,.6);transform:translateY(-2px)}
+  .ends{display:flex;justify-content:space-between;margin-top:9px;font-size:12px;color:var(--ink-faint);font-family:'JetBrains Mono',monospace}
+  .nav{display:flex;justify-content:space-between;gap:12px;margin-top:30px}
+
+  .returnbanner{margin-top:22px;display:flex;gap:11px;align-items:flex-start;background:rgba(255,192,16,.08);border:1px solid rgba(255,192,16,.28);border-radius:12px;padding:14px 16px;font-size:13.5px;color:var(--ink-dim)}
+  .returnbanner svg{flex:none;margin-top:1px}
+  .returnbanner a{color:var(--amber);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+  .returnbanner a:hover{color:var(--ink)}
+
+  /* REVIEW */
+  #review{padding:0}
+  #review .sub{color:var(--ink-dim);margin-bottom:8px}
+  .rsummary{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0 24px}
+  .pill{font-family:'JetBrains Mono',monospace;font-size:12.5px;border:1px solid var(--line-strong);border-radius:999px;padding:7px 14px;color:var(--ink-dim)}
+  .pill b{color:var(--ink)}
+  .pill.warn{border-color:rgba(255,192,16,.5);color:var(--amber)}
+  .rlist{display:flex;flex-direction:column;gap:8px;max-height:46vh;overflow:auto;padding-right:6px;margin-bottom:26px}
+  .rrow{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--bg-2);cursor:pointer;transition:border-color .15s}
+  .rrow:hover{border-color:var(--green)}
+  .rrow .rt{flex:1;min-width:0}
+  .rrow .rt .rname{font-weight:600;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .rrow .rt .rmiss{font-size:12.5px;color:var(--amber);font-family:'JetBrains Mono',monospace}
+  .chip{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;border-radius:8px;padding:5px 9px;min-width:54px;text-align:center}
+  .chip.s{background:var(--green-soft);color:var(--green);border:1px solid rgba(0,237,100,.3)}
+  .chip.i{background:rgba(255,192,16,.12);color:var(--amber);border:1px solid rgba(255,192,16,.3)}
+  .chip.empty{background:transparent;color:var(--ink-faint);border:1px dashed var(--line-strong)}
+  .sendrow{display:flex;flex-direction:column;gap:14px}
+  .status{font-size:14px;color:var(--ink-dim);min-height:20px;font-family:'JetBrains Mono',monospace}
+  .status.ok{color:var(--green)}
+  .status.err{color:#ff8a8a}
+  a.link{color:var(--ink-dim);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+  a.link:hover{color:var(--green)}
+
+  /* DONE / MESSAGE */
+  .centered{padding:clamp(28px,5vw,46px);text-align:center}
+  .centered .big{width:78px;height:78px;margin:0 auto 22px}
+  .centered h2{font-size:clamp(28px,5vw,40px);margin-bottom:12px}
+  .centered p{color:var(--ink-dim);max-width:48ch;margin:0 auto 26px;font-size:17px}
+  .centered .donebtns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+
+  .foot{text-align:center;color:var(--ink-faint);font-size:12px;font-family:'JetBrains Mono',monospace;margin-top:28px;letter-spacing:.06em}
+
+  /* TOAST */
+  #toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);z-index:50;background:#04323f;border:1px solid var(--green);color:var(--ink);padding:13px 20px;border-radius:999px;font-size:14.5px;box-shadow:0 16px 40px -12px rgba(0,0,0,.6);opacity:0;pointer-events:none;transition:opacity .25s, transform .25s;display:flex;align-items:center;gap:9px}
+  #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ============ HOME ============ -->
+  <section class="screen active" id="home">
+    <div class="brandline">
+      <svg class="leaf" viewBox="0 0 24 24" fill="none"><path d="M12 2C9 7 5 9.5 5 14.5 5 18.6 8.1 22 12 22V2z" fill="#00ED64"/><path d="M12 2c3 5 7 7.5 7 12.5C19 18.6 15.9 22 12 22V2z" fill="#00684A"/></svg>
+      <span>Self-Serve Strategy · Rock 1</span>
+    </div>
+    <p class="eyebrow">Idea Lab</p>
+    <h1>Shape the <em>self-serve</em> roadmap.</h1>
+    <p class="lede">Two ways to contribute: score the ideas already on the table, or float a brand new one for the group to weigh in on.</p>
+    <div class="paths">
+      <button class="pathcard" id="go-score">
+        <span class="pcicon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 18l4-5 3 3 5-7 4 5" stroke="#00ED64" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <h3>Score existing ideas</h3>
+        <p>Give each idea a gut-feel rating on speed to market and impact to self-serve.</p>
+        <span class="go">Start scoring <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <button class="pathcard alt" id="go-new">
+        <span class="pcicon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#FFC010" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <h3>Submit a new idea</h3>
+        <p>Have a concept that isn't on the list yet? Add it and it'll join the scoring pool.</p>
+        <span class="go">Add an idea <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ NEW IDEA ============ -->
+  <section class="screen" id="newidea">
+    <button class="homelink" data-home><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M11 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Home</button>
+    <div class="card" style="padding:clamp(24px,4vw,36px)">
+      <p class="eyebrow" style="color:var(--amber)">New Idea</p>
+      <h2>Float a concept</h2>
+      <p class="sub">Keep it tight. A sharp headline and a couple of sentences is all we need to get it into the scoring pool.</p>
+
+      <div class="field">
+        <label for="f-headline">Headline <span class="count" id="c-headline">0 / 75</span></label>
+        <input id="f-headline" type="text" maxlength="75" placeholder="Pithy summary of the concept" spellcheck="true">
+        <p class="hint">A short, punchy title. Max 75 characters.</p>
+      </div>
+
+      <div class="field">
+        <label for="f-desc">Description <span class="count" id="c-desc">0 / 300</span></label>
+        <textarea id="f-desc" maxlength="300" placeholder="A quick but more descriptive explanation of the idea."></textarea>
+        <p class="hint">Still quick, just enough context. Under 300 characters.</p>
+      </div>
+
+      <div class="field">
+        <label for="f-submitter">Your name <span class="req">required</span></label>
+        <input id="f-submitter" type="text" placeholder="Fiona E" autocomplete="name" spellcheck="false">
+      </div>
+
+      <p class="form-err" id="idea-err"></p>
+      <div class="form-actions">
+        <button class="btn btn-ghost" id="submit-another">Submit &amp; create another</button>
+        <button class="btn btn-primary" id="submit-exit">Submit &amp; exit</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SCORE INTRO ============ -->
+  <section class="screen" id="scoreintro">
+    <button class="homelink" data-home><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M11 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Home</button>
+    <p class="eyebrow">Idea Triage</p>
+    <h1>Score on <em>speed</em> &amp; <em>impact</em>.</h1>
+    <p class="lede">You'll see one idea at a time. For each, give two gut-feel scores from 1 to 10. There are no wrong answers and nothing here needs to be a known quantity.</p>
+    <div class="scales">
+      <div class="scale" style="background:linear-gradient(180deg,rgba(0,237,100,.10),rgba(0,237,100,.03));border:1px solid rgba(0,237,100,.25)">
+        <p class="tag">Metric 1</p>
+        <h3>Anticipated speed to market</h3>
+        <div class="anchor"><span class="num">1</span><span class="txt">This will take 2+ years</span></div>
+        <div class="anchor"><span class="num">5</span><span class="txt">Launch in 9–12 months</span></div>
+        <div class="anchor"><span class="num">10</span><span class="txt">We could deploy tomorrow</span></div>
+      </div>
+      <div class="scale" style="background:linear-gradient(180deg,rgba(255,192,16,.10),rgba(255,192,16,.03));border:1px solid rgba(255,192,16,.25)">
+        <p class="tag" style="color:var(--amber)">Metric 2</p>
+        <h3>Anticipated impact to self-serve</h3>
+        <div class="anchor"><span class="num">1</span><span class="txt">Might support conversion of edge cases</span></div>
+        <div class="anchor"><span class="num">5</span><span class="txt">Would help, but incrementally</span></div>
+        <div class="anchor"><span class="num">10</span><span class="txt">Could solve our volume problem single-handedly</span></div>
+      </div>
+    </div>
+    <div class="reassure">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#00ED64" stroke-width="1.6"/><path d="M12 7v6M12 16.5v.5" stroke="#00ED64" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <span>This is a gut-feel exercise. Don't overthink it or go research anything — your instinct is exactly the signal we want.</span>
+    </div>
+    <div class="namebox">
+      <label for="name">Your name <span style="color:var(--ink-faint)">(so we can pick up where you left off)</span></label>
+      <input id="name" type="text" placeholder="Fiona E" autocomplete="name" spellcheck="false">
+    </div>
+    <button class="btn btn-primary" id="begin">Start scoring <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <p class="loadnote" id="loadnote"></p>
+  </section>
+
+  <!-- ============ SCORING ============ -->
+  <section class="screen" id="score">
+    <button class="homelink" data-home><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M11 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Home</button>
+    <div class="topbar">
+      <span class="counter">Idea <b id="cur">1</b> / <span id="total">0</span></span>
+      <span class="counter"><span id="done-count">0</span> fully scored</span>
+    </div>
+    <div class="progress"><i id="bar"></i></div>
+    <div class="card idea">
+      <p class="kicker" id="kicker">Idea 1</p>
+      <h2 id="idea-title">—</h2>
+      <p class="syn" id="idea-syn">—</p>
+      <div class="metric speed" id="m-speed">
+        <div class="mhead"><span class="mname"><span class="dot"></span>Speed to market</span><span class="pick" id="pick-speed">Tap a score</span></div>
+        <p class="sub">1 = 2+ years &nbsp;·&nbsp; 5 = 9–12 months &nbsp;·&nbsp; 10 = ship tomorrow</p>
+        <div class="scale-row" id="row-speed"></div>
+        <div class="ends"><span>Slow</span><span>Fast</span></div>
+      </div>
+      <div class="metric impact" id="m-impact">
+        <div class="mhead"><span class="mname"><span class="dot"></span>Impact to self-serve</span><span class="pick" id="pick-impact">Tap a score</span></div>
+        <p class="sub">1 = edge cases &nbsp;·&nbsp; 5 = incremental help &nbsp;·&nbsp; 10 = solves volume alone</p>
+        <div class="scale-row" id="row-impact"></div>
+        <div class="ends"><span>Minor</span><span>Game-changer</span></div>
+      </div>
+    </div>
+    <div class="nav">
+      <button class="btn btn-ghost" id="prev"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M11 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Back</button>
+      <button class="btn btn-primary" id="next">Next</button>
+    </div>
+    <div class="returnbanner" id="return-banner" style="display:none">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#FFC010" stroke-width="1.5"/><path d="M12 8v5M12 16v.5" stroke="#FFC010" stroke-width="1.7" stroke-linecap="round"/></svg>
+      <span>We see you've already reviewed some ideas! If that's not the case, <a data-home>go back and add your last name or last initial to the "Name" field</a>.</span>
+    </div>
+  </section>
+
+  <!-- ============ REVIEW ============ -->
+  <section class="screen" id="review">
+    <button class="homelink" data-home><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M11 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Home</button>
+    <div class="card" style="padding:clamp(22px,4vw,34px)">
+      <p class="eyebrow">Almost done</p>
+      <h2 style="font-size:clamp(26px,5vw,38px);margin-bottom:8px">Review &amp; submit</h2>
+      <p class="sub">Tap any row to revisit it. <span style="color:var(--green)">Green</span> = speed, <span style="color:var(--amber)">amber</span> = impact.</p>
+      <div class="rsummary" id="rsummary"></div>
+      <div class="rlist" id="rlist"></div>
+      <div class="sendrow">
+        <p class="status" id="status"></p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <button class="btn btn-ghost" id="back-to-score"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M11 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Keep scoring</button>
+          <button class="btn btn-primary" id="submit">Submit my scores <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+        <p style="font-size:12.5px;color:var(--ink-faint)">Trouble submitting? <a class="link" id="dl-backup">Download a CSV backup</a> and send it over.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DONE ============ -->
+  <section class="screen" id="done">
+    <div class="card centered">
+      <svg class="big" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" fill="rgba(0,237,100,.14)" stroke="#00ED64" stroke-width="1.4"/><path d="M7.5 12.5l3 3 6-6.5" stroke="#00ED64" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <h2>Scores received. Thank you!</h2>
+      <p id="done-msg">Your gut calls are in.</p>
+      <div class="donebtns">
+        <button class="btn btn-ghost" id="dl-backup-2">Download my responses</button>
+        <button class="btn btn-primary" data-home>Back to home</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ NOTHING LEFT ============ -->
+  <section class="screen" id="nothingleft">
+    <div class="card centered">
+      <svg class="big" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" fill="rgba(0,237,100,.14)" stroke="#00ED64" stroke-width="1.4"/><path d="M7.5 12.5l3 3 6-6.5" stroke="#00ED64" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <h2>You're all caught up!</h2>
+      <p>You've already scored every idea currently on the list. Thank you for weighing in.</p>
+      <div class="returnbanner" style="text-align:left;justify-content:flex-start">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#FFC010" stroke-width="1.5"/><path d="M12 8v5M12 16v.5" stroke="#FFC010" stroke-width="1.7" stroke-linecap="round"/></svg>
+        <span>We see you've already reviewed some ideas! If that's not the case, <a data-home>go back and add your last name or last initial to the "Name" field</a>.</span>
+      </div>
+      <div class="donebtns" style="margin-top:22px"><button class="btn btn-primary" data-home>Back to home</button></div>
+    </div>
+  </section>
+
+  <p class="foot">Internal prioritization exercise · Responses are not public</p>
+</div>
+
+<div id="toast"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  // ---------- CONFIG ----------
+  var ENDPOINT = "https://script.google.com/a/macros/mongodb.com/s/AKfycby6nuRGR6aitOvN047IJojLo8eUrc10PsdEFTSynAqOLWcwf6deePEkqPrcbX-djQfR/exec";
+  var PROGRESS_KEY = "rock1-v2-progress";
+  var LOCALIDEAS_KEY = "rock1-v2-localideas";
+
+  // ---------- BASE IDEAS (seed list + offline fallback) ----------
+  var BASE_IDEAS = [
+    {title:"REAL THOUGHT LEADERS", syn:"Big investment in individual thought leaders as a brand play (Eg Mikiko not just publishing on our properties, but on podcasts, news interviews, long form LinkedIn)."},
+    {title:"HAVE OPINIONS", syn:"Big brave bets for PR. Eg the founder of Parallel keeps appearing at AI conferences saying he thinks agent activity will be 1000x human web activity. Splashy! Newsy!"},
+    {title:"MASS REDDIT PARTICIPATION", syn:"Company-wide participation goals for Reddit investment. What would our world look like if 30% of MongoDB employees were active on Reddit? Can we incentivize them to do so?"},
+    {title:"AUTO M0", syn:"Autocreate an FT cluster at M0. What if it helps? Could be limited to business emails, and auto-deleted if there's no usage in x days."},
+    {title:"10 MIN HAND HOLD", syn:"A recorded \u201Cget started in 10 mins\u201D webinar emailed to users who registered but haven't created a cluster, walking them through it on video. Could also be an appetizer to a live webinar."},
+    {title:"OFFICE HOURS", syn:"Do Developer Advocates still host office hours? Pair this with the ten-minute instructional videos and make it the opportunity to ask questions."},
+    {title:"SHORTEN M0 USAGE PERIOD", syn:"We currently give them 30 days. Let's shorten it to 7."},
+    {title:"WEBINAR FOLLOW UP BASED ON JOURNEY STAGE", syn:"If you attend an AI webinar but don't have an FT cluster yet, you should get a different follow-up email than someone who already does."},
+    {title:"AI POWERED ONBOARDING", syn:"Personalized cluster setup and next steps based on behavior and marketing signals, to get users to value faster."},
+    {title:"SWAG", syn:"At ServiceNow we sent people swag when they activated \u2014 3P delivery of a shirt, for example. Could be a limited, exclusive run."},
+    {title:"INCENTIVIZE POTENTIAL POWER USERS", syn:"Identify and incentivize highly-likely-to-be power users based on lookalike audiences."},
+    {title:"MAKE FT LESS ATTRACTIVE", syn:"Don't necessarily take away from Free Tier \u2014 just stop rolling out the very shiny stuff to it."},
+    {title:"3P THOUGHT LEADERSHIP", syn:"Solicit third-party thought leadership from review sites, champions on dev.to, and similar communities."},
+    {title:"CUSTOMER STORIES ON THE AHA MOMENT", syn:"Not just how they saved a fortune, but why they decided to move from FT to PT. Maybe as shorts we can promote, or a long-form video we can break up."},
+    {title:"ADD COMMUNITY TO THE INTENT STRATEGY", syn:"Serving ads to people on-prem is a jarring pivot. How can we approach them over a longer term horizon?"},
+    {title:"SOLUTION LED INTENT", syn:"Start with the solution we offer rather than leading with the product offering."},
+    {title:"PT PREVIEW", syn:"Try free PT access for 7 days."},
+    {title:"CREDITS OR SWAG FOR X", syn:"Incentivize a behavior with credits or swag (what kind of behavior?)."},
+    {title:"PT FEATURES WORKSHOP W INCLUDED PT CREDITS", syn:"Give users credits to play with during a workshop that walks them through PT-specific benefits and features."},
+    {title:"INFLUENCE \u201COTHER\u201D CHANNELS", syn:"Learn why our targets are so high, and whether we can do anything to shift them."},
+    {title:"PT PRICING AND FEATURES RIGHT AT ONBOARDING", syn:"Seed the benefits of PT directly from the point of registration and within in-platform messaging."},
+    {title:"PROMOTIONS / CYBER MONDAY ETC", syn:"It's not just for retail! Maybe attached to a PR moment, or code-based like Lovable does (10% off, 20% off). If we don't want to join the bandwagon, can we make our own holiday \u2014 \u201CMONGODB MONDAY\u201D on our startiversary?"},
+    {title:"OPTIMIZE FREE TO PAID ANCHOR TEXT & LINKS", syn:"Make it easy for users to convert when we can detect that they're already on FT."},
+    {title:"COMPARISON CONTENT", syn:"Audit existing content: dedupe, expand, optimize, and make it accessible."},
+    {title:"PRICING BUNDLES", syn:"People love bundles. Can we incentivize adoption of certain tools or products based on in-app behavior?"},
+    {title:"HIGH TIER PT", syn:"In progress \u2014 weights our targeting and cost-pers based on perceived value. Starting with Geo as the primary criteria but will expand (Xiaolin & Daniel are DRIs)."},
+    {title:"GEO-SPECIFIC SOCIAL", syn:"Geo-based social activations via local partners (in line with China and Japan conversations)."},
+    {title:"STALK POWER USERS (NICELY)", syn:"Track power users' LinkedIns to see when they leave their companies, because they might be able to bring us into the new org."},
+    {title:"PR STUNT", syn:"A la the Ramp video \u2014 we want to be a world-class company but won't invest in world-class advertising."},
+    {title:"MAKE .LOCALS PR, NOT JUST CUSTOMER SUPPORT", syn:"If our only point of contact with the public is for insiders, it can never be an acquisition tool. There's value in making people feel good \u2014 how do we do that and measure it? Is there a PT goal, and should there be (probably)?"},
+    {title:"SEPARATE DEVELOPERS AND BUILDERS", syn:"What is the distinction, and what is the impact of Builders on our funnel metrics? How do we measure it and how do we influence it?"},
+    {title:"IN-PRODUCT PROMOTIONS", syn:"Ads/promos for paid features within the product UI (CLI?)."}
+  ];
+
+  // ---------- STATE ----------
+  var state = { name:"", idx:0, ideas:[], scores:{}, scoredTitles:[] };
+  // scores keyed by idea TITLE -> {speed, impact}
+
+  // ---------- DOM ----------
+  var $ = function(id){ return document.getElementById(id); };
+  var screens = {
+    home:$("home"), newidea:$("newidea"), scoreintro:$("scoreintro"),
+    score:$("score"), review:$("review"), done:$("done"), nothingleft:$("nothingleft")
+  };
+  function show(name){
+    Object.keys(screens).forEach(function(k){ screens[k].classList.toggle("active", k===name); });
+    window.scrollTo({top:0, behavior:"smooth"});
+  }
+  function norm(s){ return String(s==null?"":s).trim().toLowerCase(); }
+
+  // ---------- TOAST ----------
+  var toastTimer=null;
+  function toast(msg){
+    var t=$("toast");
+    t.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#00ED64" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>'+msg;
+    t.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer=setTimeout(function(){ t.classList.remove("show"); }, 2600);
+  }
+
+  // ---------- LOCAL STORAGE ----------
+  function saveProgress(){ try{ localStorage.setItem(PROGRESS_KEY, JSON.stringify({name:state.name, scores:state.scores})); }catch(e){} }
+  function loadProgress(){
+    try{ var r=localStorage.getItem(PROGRESS_KEY); if(r){ return JSON.parse(r); } }catch(e){} return null;
+  }
+  function clearProgress(){ try{ localStorage.removeItem(PROGRESS_KEY); }catch(e){} }
+  function loadLocalIdeas(){
+    try{ var r=localStorage.getItem(LOCALIDEAS_KEY); if(r){ return JSON.parse(r)||[]; } }catch(e){} return [];
+  }
+  function stashLocalIdea(idea){
+    try{
+      var arr=loadLocalIdeas();
+      arr.push(idea);
+      localStorage.setItem(LOCALIDEAS_KEY, JSON.stringify(arr));
+    }catch(e){}
+  }
+
+  // ---------- NETWORK ----------
+  // READ: cross-origin GET works against an "Anyone"-deployed Apps Script web app
+  // (it 302-redirects to googleusercontent, which returns Access-Control-Allow-Origin:*).
+  function bootstrap(name){
+    return new Promise(function(resolve){
+      var done=false;
+      var ctrl = (typeof AbortController!=="undefined") ? new AbortController() : null;
+      var to=setTimeout(function(){ if(!done){ done=true; if(ctrl)ctrl.abort(); resolve(null); } }, 9000);
+      var url = ENDPOINT + "?name=" + encodeURIComponent(name||"") + "&t=" + Date.now();
+      var opts = {method:"GET"}; if(ctrl) opts.signal=ctrl.signal;
+      fetch(url, opts)
+        .then(function(r){ return r.text(); })
+        .then(function(txt){
+          if(done) return; done=true; clearTimeout(to);
+          try{ var d=JSON.parse(txt); resolve(d&&d.ok!==false?d:{newIdeas:[],scored:[]}); }
+          catch(e){ resolve(null); }
+        })
+        .catch(function(){ if(done)return; done=true; clearTimeout(to); resolve(null); });
+    });
+  }
+  // WRITE: fire-and-forget no-cors POST (the proven-working path from V1).
+  function postData(payload){
+    return fetch(ENDPOINT, {
+      method:"POST", mode:"no-cors",
+      headers:{"Content-Type":"text/plain;charset=utf-8"},
+      body: JSON.stringify(payload)
+    });
+  }
+
+  // ---------- BUILD IDEA LIST ----------
+  function buildIdeaList(serverNewIdeas){
+    var list = BASE_IDEAS.map(function(it){ return {title:it.title, syn:it.syn}; });
+    var seen = {}; list.forEach(function(it){ seen[norm(it.title)] = true; });
+    // local session-submitted first (immediate), then server-returned
+    var extra = loadLocalIdeas().concat(serverNewIdeas || []);
+    extra.forEach(function(ni){
+      var t = ni.headline || ni.title; if(!t) return;
+      if(seen[norm(t)]) return; seen[norm(t)] = true;
+      list.push({ title:String(t), syn:String(ni.description || ni.syn || "") });
+    });
+    return list;
+  }
+
+  // ---------- SCORE BUTTONS ----------
+  function buildRow(rowId, metric){
+    var row=$(rowId); row.innerHTML="";
+    for(var n=1;n<=10;n++){ (function(val){
+      var b=document.createElement("button");
+      b.className="sb"; b.type="button"; b.textContent=val;
+      b.setAttribute("aria-label", metric+" score "+val);
+      b.addEventListener("click", function(){ setScore(metric, val); });
+      row.appendChild(b);
+    })(n); }
+  }
+  function curIdea(){ return state.ideas[state.idx]; }
+  function scoreFor(title){ return state.scores[title] || {}; }
+  function countDone(){
+    var c=0; state.ideas.forEach(function(it){ var s=state.scores[it.title]; if(s&&s.speed&&s.impact)c++; }); return c;
+  }
+  function setScore(metric, val){
+    var t=curIdea().title;
+    if(!state.scores[t]) state.scores[t]={};
+    state.scores[t][metric]=val; saveProgress(); renderIdea();
+  }
+
+  // ---------- RENDER SCORING ----------
+  function renderIdea(){
+    var i=state.idx, idea=state.ideas[i], n=state.ideas.length;
+    $("cur").textContent=i+1; $("total").textContent=n;
+    $("kicker").textContent="Idea "+(i+1);
+    $("idea-title").textContent=idea.title;
+    $("idea-syn").textContent=idea.syn || "(No description provided.)";
+    $("bar").style.width=(n<=1?100:(i/(n-1)*100))+"%";
+    $("done-count").textContent=countDone();
+    var s=scoreFor(idea.title);
+    ["speed","impact"].forEach(function(metric){
+      var btns=$("row-"+metric).children;
+      for(var k=0;k<btns.length;k++){ btns[k].classList.toggle("on", s[metric]===(k+1)); }
+      var pick=$("pick-"+metric);
+      if(s[metric]){ pick.innerHTML="Your score: <b>"+s[metric]+"</b> / 10"; } else { pick.textContent="Tap a score"; }
+    });
+    $("prev").disabled=(i===0);
+    var last=(i===n-1);
+    $("next").innerHTML = last
+      ? 'Review &amp; submit <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+      : 'Next <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    $("return-banner").style.display = (state.scoredTitles.length>0) ? "flex" : "none";
+  }
+  function goNext(){ if(state.idx<state.ideas.length-1){ state.idx++; saveProgress(); renderIdea(); } else { renderReview(); show("review"); } }
+  function goPrev(){ if(state.idx>0){ state.idx--; saveProgress(); renderIdea(); } }
+
+  // ---------- REVIEW ----------
+  function escapeHtml(str){ return String(str).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function renderReview(){
+    var total=state.ideas.length, done=countDone(), missing=total-done;
+    $("rsummary").innerHTML=
+      '<span class="pill"><b>'+total+'</b> ideas</span>'+
+      '<span class="pill"><b>'+done+'</b> fully scored</span>'+
+      (missing>0?'<span class="pill warn"><b>'+missing+'</b> incomplete</span>':'<span class="pill" style="border-color:rgba(0,237,100,.5);color:var(--green)">All scored \u2713</span>');
+    var list=$("rlist"); list.innerHTML="";
+    state.ideas.forEach(function(idea,i){
+      var s=scoreFor(idea.title);
+      var row=document.createElement("div"); row.className="rrow";
+      var miss=(!s.speed&&!s.impact)?"Not scored":(!s.speed?"Missing speed":(!s.impact?"Missing impact":""));
+      row.innerHTML='<div class="rt"><div class="rname">'+(i+1)+'. '+escapeHtml(idea.title)+'</div>'+(miss?'<div class="rmiss">'+miss+'</div>':'')+'</div>'+
+        '<span class="chip '+(s.speed?'s':'empty')+'">S '+(s.speed||'\u2013')+'</span>'+
+        '<span class="chip '+(s.impact?'i':'empty')+'">I '+(s.impact||'\u2013')+'</span>';
+      row.addEventListener("click", function(){ state.idx=i; saveProgress(); renderIdea(); show("score"); });
+      list.appendChild(row);
+    });
+  }
+
+  // ---------- SCORE SUBMIT ----------
+  function completedScores(){
+    var out=[];
+    state.ideas.forEach(function(idea){
+      var s=scoreFor(idea.title);
+      if(s.speed&&s.impact){ out.push({idea:idea.title, speed:s.speed, impact:s.impact}); }
+    });
+    return out;
+  }
+  function downloadCSV(){
+    var done=completedScores();
+    var rows=[["timestamp","respondent","idea","speed_to_market","impact_to_self_serve"]];
+    var ts=new Date().toISOString();
+    done.forEach(function(r){ rows.push([ts, state.name||"Anonymous", r.idea, r.speed, r.impact]); });
+    var csv=rows.map(function(r){ return r.map(function(c){ c=String(c); return /[",\n]/.test(c)?'"'+c.replace(/"/g,'""')+'"':c; }).join(","); }).join("\n");
+    var blob=new Blob([csv],{type:"text/csv;charset=utf-8"}), url=URL.createObjectURL(blob);
+    var a=document.createElement("a"); a.href=url; a.download="idea-scores-"+(state.name||"anonymous").replace(/\s+/g,"-").toLowerCase()+".csv";
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 1500);
+  }
+  var submitting=false;
+  function submitScores(){
+    if(submitting) return;
+    var done=completedScores();
+    var status=$("status");
+    if(done.length===0){ status.className="status err"; status.textContent="Score at least one idea (both speed and impact) before submitting."; return; }
+    submitting=true; status.className="status"; status.textContent="Sending\u2026"; $("submit").disabled=true;
+    var payload={ type:"scores", respondent:state.name||"Anonymous", submittedAt:new Date().toISOString(), scores:done };
+    postData(payload).then(function(){
+      status.className="status ok"; status.textContent="Sent \u2713";
+      $("done-msg").textContent="Your "+done.length+" scored "+(done.length===1?"idea is":"ideas are")+" in.";
+      clearProgress();
+      setTimeout(function(){ show("done"); }, 450);
+    }).catch(function(){
+      submitting=false; $("submit").disabled=false;
+      status.className="status err"; status.textContent="Couldn't reach the server. Please download the CSV backup and send it over.";
+    });
+  }
+
+  // ---------- ENTER SCORE FLOW ----------
+  function startScoring(){
+    var name=$("name").value.trim();
+    state.name=name;
+    var note=$("loadnote"); note.textContent="Loading the latest ideas\u2026";
+    $("begin").disabled=true;
+    bootstrap(name).then(function(data){
+      $("begin").disabled=false; note.textContent="";
+      var offline=(data===null);
+      var serverNew=(data&&data.newIdeas)?data.newIdeas:[];
+      state.scoredTitles=(data&&data.scored)?data.scored:[];
+      var full=buildIdeaList(serverNew);
+      var scoredSet={}; state.scoredTitles.forEach(function(t){ scoredSet[norm(t)]=true; });
+      var filtered=full.filter(function(it){ return !scoredSet[norm(it.title)]; });
+
+      // restore any in-progress (unsubmitted) scores for this name
+      var prog=loadProgress();
+      if(prog && norm(prog.name)===norm(name) && prog.scores){ state.scores=prog.scores; } else { state.scores={}; }
+
+      state.ideas=filtered; state.idx=0;
+
+      if(filtered.length===0){ show("nothingleft"); return; }
+      if(offline){ note.textContent=""; toast("Couldn't load new ideas; showing the core list."); }
+      renderIdea(); show("score");
+    });
+  }
+
+  // ---------- NEW IDEA ----------
+  function resetIdeaForm(){
+    $("f-headline").value=""; $("f-desc").value=""; $("f-submitter").value="";
+    $("c-headline").textContent="0 / 75"; $("c-desc").textContent="0 / 300";
+    $("c-headline").className="count"; $("c-desc").className="count";
+    $("idea-err").textContent="";
+  }
+  var ideaSubmitting=false;
+  function submitIdea(after){
+    if(ideaSubmitting) return;
+    var headline=$("f-headline").value.trim();
+    var desc=$("f-desc").value.trim();
+    var submitter=$("f-submitter").value.trim();
+    var err=$("idea-err");
+    if(!headline){ err.textContent="A headline is required."; $("f-headline").focus(); return; }
+    if(!desc){ err.textContent="A description is required."; $("f-desc").focus(); return; }
+    if(!submitter){ err.textContent="Please add your name."; $("f-submitter").focus(); return; }
+    err.textContent="";
+    ideaSubmitting=true;
+    $("submit-another").disabled=true; $("submit-exit").disabled=true;
+    var idea={ headline:headline, description:desc, submitter:submitter };
+    stashLocalIdea(idea); // local backup so a submitter always sees their own idea next
+    var payload={ type:"idea", headline:headline, description:desc, submitter:submitter, submittedAt:new Date().toISOString() };
+    postData(payload).then(proceed).catch(proceed);
+    function proceed(){
+      ideaSubmitting=false; $("submit-another").disabled=false; $("submit-exit").disabled=false;
+      resetIdeaForm();
+      if(after==="another"){ toast("Idea submitted. Add another!"); $("f-headline").focus(); }
+      else { show("home"); toast("Idea submitted. Thank you!"); }
+    }
+  }
+
+  // ---------- WIRE UP ----------
+  buildRow("row-speed","speed"); buildRow("row-impact","impact");
+
+  // home routing
+  $("go-score").addEventListener("click", function(){ $("loadnote").textContent=""; show("scoreintro"); $("name").focus(); });
+  $("go-new").addEventListener("click", function(){ resetIdeaForm(); show("newidea"); $("f-headline").focus(); });
+
+  // any element with data-home goes home
+  Array.prototype.forEach.call(document.querySelectorAll("[data-home]"), function(el){
+    el.addEventListener("click", function(e){ e.preventDefault(); show("home"); });
+  });
+
+  // new idea form
+  $("f-headline").addEventListener("input", function(){
+    var el=$("c-headline"); el.textContent=this.value.length+" / 75"; el.className="count"+(this.value.length>=75?" warn":"");
+  });
+  $("f-desc").addEventListener("input", function(){
+    var el=$("c-desc"); el.textContent=this.value.length+" / 300"; el.className="count"+(this.value.length>=300?" warn":"");
+  });
+  $("submit-another").addEventListener("click", function(){ submitIdea("another"); });
+  $("submit-exit").addEventListener("click", function(){ submitIdea("exit"); });
+
+  // score flow
+  $("begin").addEventListener("click", startScoring);
+  $("next").addEventListener("click", goNext);
+  $("prev").addEventListener("click", goPrev);
+  $("back-to-score").addEventListener("click", function(){ renderIdea(); show("score"); });
+  $("submit").addEventListener("click", submitScores);
+  $("dl-backup").addEventListener("click", downloadCSV);
+  $("dl-backup-2").addEventListener("click", downloadCSV);
+
+  document.addEventListener("keydown", function(e){
+    if(!screens.score.classList.contains("active")) return;
+    if(e.key==="ArrowRight"){ goNext(); } else if(e.key==="ArrowLeft"){ goPrev(); }
+  });
+
+})();
+</script>
+</body>
+</html>
