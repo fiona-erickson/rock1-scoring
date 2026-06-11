@@ -12,7 +12,7 @@
   :root{
     --bg:#001E2B; --bg-2:#00141d; --panel:#0a2a38; --panel-2:#0e3343;
     --line:rgba(255,255,255,.10); --line-strong:rgba(255,255,255,.18);
-    --ink:#E8F3EF; --white:#FFFFFF; --ink-dim:#8FB0AE; --ink-faint:#5f8482;
+    --ink:#E8F3EF; --ink-dim:#8FB0AE; --ink-faint:#5f8482;
     --green:#00ED64; --green-deep:#00684A; --green-soft:rgba(0,237,100,.14);
     --amber:#FFC010; --radius:18px; --shadow:0 24px 60px -20px rgba(0,0,0,.65);
   }
@@ -72,7 +72,7 @@
   .pathcard:hover{transform:translateY(-3px);border-color:var(--green);box-shadow:0 18px 40px -18px rgba(0,237,100,.5)}
   .pathcard .pcicon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:var(--green-soft);border:1px solid rgba(0,237,100,.3)}
   .pathcard.alt .pcicon{background:rgba(255,192,16,.12);border-color:rgba(255,192,16,.3)}
-  .pathcard h3{font-family:'Bricolage Grotesque',sans-serif;color:var(--white);font-size:22px;font-weight:700}
+  .pathcard h3{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:700}
   .pathcard p{color:var(--ink-dim);font-size:14.5px;line-height:1.5;flex:1}
   .pathcard .go{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--green);display:flex;align-items:center;gap:7px}
   .pathcard.alt .go{color:var(--amber)}
@@ -180,6 +180,38 @@
   /* TOAST */
   #toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);z-index:50;background:#04323f;border:1px solid var(--green);color:var(--ink);padding:13px 20px;border-radius:999px;font-size:14.5px;box-shadow:0 16px 40px -12px rgba(0,0,0,.6);opacity:0;pointer-events:none;transition:opacity .25s, transform .25s;display:flex;align-items:center;gap:9px}
   #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  /* MATRIX */
+  .matrixlink{display:inline-flex;align-items:center;gap:9px;font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-dim);background:none;border:1px solid var(--line-strong);border-radius:999px;padding:12px 20px;cursor:pointer;transition:border-color .15s, color .15s, transform .15s}
+  .matrixlink:hover{border-color:var(--green);color:var(--green);transform:translateY(-1px)}
+  #matrix h2{font-size:clamp(26px,5vw,38px);margin-bottom:8px}
+  #matrix .sub{color:var(--ink-dim);margin-bottom:6px;max-width:60ch}
+  .chartbox{position:relative;background:var(--bg-2);border:1px solid var(--line);border-radius:16px;padding:10px 10px 6px;margin:18px 0 26px}
+  .chartbox svg{display:block;width:100%;height:auto}
+  .gtxt{fill:var(--ink-faint);font-family:'JetBrains Mono',monospace;font-size:11px}
+  .gaxis{fill:var(--ink-dim);font-family:'Hanken Grotesk',sans-serif;font-size:12px;font-weight:600}
+  .qlabel{fill:rgba(255,255,255,.20);font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:12.5px;letter-spacing:.04em}
+  .dot{cursor:pointer}
+  .tooltip{position:absolute;pointer-events:none;z-index:5;max-width:262px;background:#04323f;border:1px solid var(--green);border-radius:10px;padding:10px 12px;color:var(--ink);box-shadow:0 14px 32px -10px rgba(0,0,0,.65);opacity:0;transition:opacity .12s;left:0;top:0}
+  .tooltip.show{opacity:1}
+  .tooltip .tt-title{font-weight:700;font-family:'Bricolage Grotesque',sans-serif;font-size:14px;margin-bottom:4px;line-height:1.2}
+  .tooltip .tt-desc{color:var(--ink-dim);font-size:12.5px;line-height:1.45}
+  .tooltip .tt-meta{margin-top:7px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--green)}
+  .selectedcard{border:1px solid var(--green);background:var(--green-soft);border-radius:12px;padding:15px 17px;margin-bottom:16px;animation:rise .3s both}
+  .selectedcard .sc-top{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+  .selectedcard .sc-name{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:17px}
+  .selectedcard .sc-rank{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--green);flex:none}
+  .selectedcard .sc-desc{color:var(--ink-dim);font-size:13.5px;margin-top:7px;line-height:1.5}
+  .selectedcard .sc-vals{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+  .rank-h{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:20px;margin:6px 0 12px}
+  .ranklist{display:flex;flex-direction:column;gap:7px;max-height:52vh;overflow:auto;padding-right:6px}
+  .rankrow{display:flex;align-items:center;gap:11px;padding:11px 14px;border:1px solid var(--line);border-radius:11px;background:var(--bg-2);cursor:pointer;transition:border-color .15s, background .15s}
+  .rankrow:hover{border-color:var(--green)}
+  .rankrow.sel{border-color:var(--green);background:var(--green-soft)}
+  .rankrow .rnum{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--ink-faint);min-width:24px;flex:none;text-align:right}
+  .rankrow .rttl{flex:1;min-width:0;font-weight:600;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .rankrow .rn{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-faint);flex:none}
+  .matrix-empty{padding:30px 4px;color:var(--ink-dim);line-height:1.6}
 </style>
 </head>
 <body>
@@ -206,6 +238,13 @@
         <h3>Submit a new idea</h3>
         <p>Have a concept that isn't on the list yet? Add it and it'll join the scoring pool.</p>
         <span class="go">Add an idea <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+    </div>
+    <div style="margin-top:28px">
+      <button class="matrixlink" id="go-matrix">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 18l4-5 3 3 5-7 4 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        See scored ideas in a prioritization matrix
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
     </div>
   </section>
@@ -359,6 +398,16 @@
     </div>
   </section>
 
+  <!-- ============ MATRIX ============ -->
+  <section class="screen" id="matrix">
+    <button class="homelink" data-home><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M11 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Home</button>
+    <p class="eyebrow">Prioritization Matrix</p>
+    <h2>Where the ideas land</h2>
+    <p class="sub">Average speed to market on the x-axis, average impact to self-serve on the y-axis. Hover a point for the idea and its description; click it to pin it to the top of the rankings below.</p>
+    <p class="status" id="matrix-status"></p>
+    <div id="matrix-body"></div>
+  </section>
+
   <p class="foot">Internal prioritization exercise · Responses are not public</p>
 </div>
 
@@ -417,7 +466,8 @@
   var $ = function(id){ return document.getElementById(id); };
   var screens = {
     home:$("home"), newidea:$("newidea"), scoreintro:$("scoreintro"),
-    score:$("score"), review:$("review"), done:$("done"), nothingleft:$("nothingleft")
+    score:$("score"), review:$("review"), done:$("done"), nothingleft:$("nothingleft"),
+    matrix:$("matrix")
   };
   function show(name){
     Object.keys(screens).forEach(function(k){ screens[k].classList.toggle("active", k===name); });
@@ -697,6 +747,242 @@
     if(!screens.score.classList.contains("active")) return;
     if(e.key==="ArrowRight"){ goNext(); } else if(e.key==="ArrowLeft"){ goPrev(); }
   });
+
+  // ========================================================================
+  // PRIORITIZATION MATRIX
+  // ========================================================================
+  var MATRIX = null;
+  // Reviewers used for the first tie-break round:
+  var TIEBREAK_NAMES = { "nathan":1, "scott w":1, "scott worthington":1, "scott":1, "anand":1 };
+  var NUDGE_STEP = 0.13; // how far tied points are separated, in score units
+
+  function mean(arr){ if(!arr.length) return 0; var s=0; for(var i=0;i<arr.length;i++) s+=arr[i]; return s/arr.length; }
+  // Mode = most frequent value; if several values tie for most frequent, the highest wins.
+  function modeHigh(arr){
+    if(!arr.length) return null;
+    var f={}, best=null, bc=-1;
+    for(var i=0;i<arr.length;i++){ var v=arr[i]; f[v]=(f[v]||0)+1; }
+    Object.keys(f).forEach(function(k){ var v=Number(k), c=f[k]; if(c>bc || (c===bc && v>best)){ bc=c; best=v; } });
+    return best;
+  }
+  function clamp(v,a,b){ return v<a?a:(v>b?b:v); }
+  function findByKey(key){ for(var i=0;i<MATRIX.ideas.length;i++){ if(MATRIX.ideas[i].key===key) return MATRIX.ideas[i]; } return null; }
+
+  function loadMatrix(){
+    var st=$("matrix-status"); st.className="status"; st.textContent="Loading scores\u2026";
+    $("matrix-body").innerHTML="";
+    var ctrl=(typeof AbortController!=="undefined")?new AbortController():null;
+    var done=false, to=setTimeout(function(){ if(!done){ done=true; if(ctrl)ctrl.abort(); fail(); } }, 11000);
+    var opts={method:"GET"}; if(ctrl) opts.signal=ctrl.signal;
+    fetch(ENDPOINT+"?matrix=1&t="+Date.now(), opts)
+      .then(function(r){ return r.text(); })
+      .then(function(txt){ if(done) return; done=true; clearTimeout(to);
+        var data=null; try{ data=JSON.parse(txt); }catch(e){}
+        st.textContent=""; buildMatrix(data||{}); renderMatrix();
+      })
+      .catch(function(){ if(done) return; done=true; clearTimeout(to); fail(); });
+    function fail(){ st.className="status err"; st.textContent="Couldn't load scores. Confirm the Apps Script was updated and redeployed."; $("matrix-body").innerHTML=""; }
+  }
+
+  function buildMatrix(data){
+    var rows = (data && data.rows) ? data.rows : [];
+    var serverNew = (data && data.newIdeas) ? data.newIdeas : [];
+
+    // description + canonical-title lookup (base ideas + submitted ideas)
+    var descMap={}, canon={};
+    BASE_IDEAS.forEach(function(it){ var k=norm(it.title); descMap[k]=it.syn; canon[k]=it.title; });
+    loadLocalIdeas().concat(serverNew).forEach(function(ni){
+      var t=ni.headline||ni.title; if(!t) return; var k=norm(t);
+      if(!(k in descMap)) descMap[k]=ni.description||ni.syn||"";
+      if(!(k in canon)) canon[k]=String(t);
+    });
+
+    // aggregate score rows per idea
+    var by={};
+    rows.forEach(function(r){
+      var sp=Number(r.speed), im=Number(r.impact);
+      if(!(sp>=1&&sp<=10) || !(im>=1&&im<=10)) return;
+      var title=String(r.idea||"").trim(); if(!title) return;
+      var k=norm(title);
+      var o=by[k] || (by[k]={ key:k, title:(canon[k]||title), speeds:[], impacts:[], tb:[] });
+      o.speeds.push(sp); o.impacts.push(im);
+      if(TIEBREAK_NAMES[norm(r.respondent)]){ o.tb.push(sp); o.tb.push(im); }
+    });
+
+    var ideas=Object.keys(by).map(function(k){
+      var o=by[k];
+      return {
+        key:k, title:o.title, desc:(descMap[k]||""), n:o.speeds.length,
+        avgS:mean(o.speeds), avgI:mean(o.impacts),
+        speedMode:modeHigh(o.speeds), impactMode:modeHigh(o.impacts),
+        tbMean:(o.tb.length?mean(o.tb):null),
+        px:0, py:0, rank:0
+      };
+    });
+
+    computePositions(ideas);
+
+    var ranked=ideas.slice().sort(function(a,b){
+      var pa=a.avgS+a.avgI, pb=b.avgS+b.avgI;
+      if(pb!==pa) return pb-pa;
+      if(b.avgI!==a.avgI) return b.avgI-a.avgI;
+      return a.title.toLowerCase()<b.title.toLowerCase()?-1:1;
+    });
+    ranked.forEach(function(it,i){ it.rank=i+1; });
+
+    MATRIX={ ideas:ideas, ranked:ranked, selectedKey:null };
+  }
+
+  // Apply tie-break nudges so points that share an average aren't stacked.
+  function computePositions(ideas){
+    ideas.forEach(function(it){ it.px=it.avgS; it.py=it.avgI; });
+    var groups={};
+    ideas.forEach(function(it){ var key=it.avgS.toFixed(3)+"|"+it.avgI.toFixed(3); (groups[key]||(groups[key]=[])).push(it); });
+
+    function tbVal(x){ return x.tbMean==null ? -Infinity : x.tbMean; }
+    function cmp(a,b){
+      // Round 1: tie-break reviewers (Nathan / Scott / Anand) — higher mean wins
+      if(tbVal(a)!==tbVal(b)) return tbVal(b)-tbVal(a);
+      // Round 2: higher Mode of Speed
+      if(a.speedMode!==b.speedMode) return b.speedMode-a.speedMode;
+      // Round 3: higher Mode of Impact
+      if(a.impactMode!==b.impactMode) return b.impactMode-a.impactMode;
+      // Round 4: alphabetical (earlier first)
+      return a.title.toLowerCase()<b.title.toLowerCase()?-1:1;
+    }
+
+    Object.keys(groups).forEach(function(key){
+      var g=groups[key]; if(g.length<2) return;
+      g.sort(cmp);
+      // Which axis(es) get nudged is decided by the round that breaks the top pair.
+      var a=g[0], b=g[1], axis;
+      if(tbVal(a)!==tbVal(b)) axis="both";          // round 1
+      else if(a.speedMode!==b.speedMode) axis="x";  // round 2
+      else if(a.impactMode!==b.impactMode) axis="y";// round 3
+      else axis="both";                             // round 4 (alphabetical)
+      var n=g.length;
+      g.forEach(function(it,i){
+        var off=((n-1)/2 - i) * NUDGE_STEP; // top-ranked gets the highest position
+        if(axis==="x"||axis==="both") it.px=it.avgS+off;
+        if(axis==="y"||axis==="both") it.py=it.avgI+off;
+      });
+    });
+  }
+
+  function renderMatrix(){
+    var body=$("matrix-body");
+    if(!MATRIX || !MATRIX.ideas.length){
+      body.innerHTML='<div class="matrix-empty">No scored ideas to plot yet. Once people submit scores they\u2019ll appear here.<br>If you just updated the backend, give it a moment and reload.</div>';
+      return;
+    }
+    body.innerHTML =
+      '<div class="chartbox" id="chartbox">'+buildChartSVG(MATRIX.ideas)+'<div class="tooltip" id="mtt"></div></div>'+
+      buildRankingsHTML();
+    attachChartEvents();
+    attachRankEvents();
+  }
+
+  function buildChartSVG(ideas){
+    var W=660,H=540,mL=58,mR=22,mT=26,mB=54, pw=W-mL-mR, ph=H-mT-mB;
+    var dMin=0.7, dMax=10.3;
+    function X(v){ return mL+(v-dMin)/(dMax-dMin)*pw; }
+    function Y(v){ return mT+(1-(v-dMin)/(dMax-dMin))*ph; }
+    var midX=X(5.5), midY=Y(5.5);
+    var s='<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg">';
+    s+='<rect x="'+midX.toFixed(1)+'" y="'+mT+'" width="'+(mL+pw-midX).toFixed(1)+'" height="'+(midY-mT).toFixed(1)+'" fill="rgba(0,237,100,.06)"/>';
+    for(var t=1;t<=10;t++){
+      var gx=X(t), gy=Y(t);
+      s+='<line x1="'+gx.toFixed(1)+'" y1="'+mT+'" x2="'+gx.toFixed(1)+'" y2="'+(mT+ph)+'" stroke="rgba(255,255,255,.05)"/>';
+      s+='<line x1="'+mL+'" y1="'+gy.toFixed(1)+'" x2="'+(mL+pw)+'" y2="'+gy.toFixed(1)+'" stroke="rgba(255,255,255,.05)"/>';
+      s+='<text class="gtxt" x="'+gx.toFixed(1)+'" y="'+(mT+ph+16)+'" text-anchor="middle">'+t+'</text>';
+      s+='<text class="gtxt" x="'+(mL-9)+'" y="'+(gy+4).toFixed(1)+'" text-anchor="end">'+t+'</text>';
+    }
+    s+='<line x1="'+midX.toFixed(1)+'" y1="'+mT+'" x2="'+midX.toFixed(1)+'" y2="'+(mT+ph)+'" stroke="rgba(255,255,255,.13)" stroke-dasharray="4 5"/>';
+    s+='<line x1="'+mL+'" y1="'+midY.toFixed(1)+'" x2="'+(mL+pw)+'" y2="'+midY.toFixed(1)+'" stroke="rgba(255,255,255,.13)" stroke-dasharray="4 5"/>';
+    s+='<text class="qlabel" x="'+(mL+pw-8)+'" y="'+(mT+16)+'" text-anchor="end">Quick wins</text>';
+    s+='<text class="qlabel" x="'+(mL+8)+'" y="'+(mT+16)+'" text-anchor="start">Big bets</text>';
+    s+='<text class="qlabel" x="'+(mL+8)+'" y="'+(mT+ph-9)+'" text-anchor="start">Deprioritize</text>';
+    s+='<text class="qlabel" x="'+(mL+pw-8)+'" y="'+(mT+ph-9)+'" text-anchor="end">Fill-ins</text>';
+    s+='<text class="gaxis" x="'+(mL+pw/2)+'" y="'+(H-12)+'" text-anchor="middle">Average Speed to Market \u2192</text>';
+    s+='<text class="gaxis" transform="translate(15,'+(mT+ph/2)+') rotate(-90)" text-anchor="middle">Average Impact to Self-Serve \u2192</text>';
+    ideas.forEach(function(it,i){
+      var cx=X(clamp(it.px,dMin,dMax)), cy=Y(clamp(it.py,dMin,dMax));
+      var sel=(MATRIX.selectedKey===it.key);
+      s+='<circle class="dot" data-i="'+i+'" cx="'+cx.toFixed(1)+'" cy="'+cy.toFixed(1)+'" r="'+(sel?8:6)+'" '+
+         'fill="'+(sel?'#FFC010':'rgba(0,237,100,.85)')+'" stroke="'+(sel?'#3a2a00':'#00231b')+'" stroke-width="1.2"/>';
+    });
+    s+='</svg>';
+    return s;
+  }
+
+  function buildRankingsHTML(){
+    var html='';
+    if(MATRIX.selectedKey){
+      var it=findByKey(MATRIX.selectedKey);
+      if(it){
+        html+='<div class="selectedcard">'+
+          '<div class="sc-top"><span class="sc-name">'+escapeHtml(it.title)+'</span><span class="sc-rank">Rank #'+it.rank+' of '+MATRIX.ideas.length+'</span></div>'+
+          (it.desc?'<div class="sc-desc">'+escapeHtml(it.desc)+'</div>':'')+
+          '<div class="sc-vals"><span class="chip s">Avg Speed '+it.avgS.toFixed(1)+'</span><span class="chip i">Avg Impact '+it.avgI.toFixed(1)+'</span><span class="pill">'+it.n+' vote'+(it.n===1?'':'s')+'</span></div>'+
+        '</div>';
+      }
+    }
+    html+='<div class="rank-h">Full rankings</div>';
+    html+='<div class="ranklist">';
+    MATRIX.ranked.forEach(function(it){
+      var idx=MATRIX.ideas.indexOf(it);
+      var sel=(MATRIX.selectedKey===it.key)?' sel':'';
+      html+='<div class="rankrow'+sel+'" data-i="'+idx+'">'+
+        '<span class="rnum">'+it.rank+'</span>'+
+        '<span class="rttl">'+escapeHtml(it.title)+'</span>'+
+        '<span class="chip s">S '+it.avgS.toFixed(1)+'</span>'+
+        '<span class="chip i">I '+it.avgI.toFixed(1)+'</span>'+
+        '<span class="rn">'+it.n+'\u00d7</span>'+
+      '</div>';
+    });
+    html+='</div>';
+    return html;
+  }
+
+  function attachChartEvents(){
+    var box=$("chartbox"), tt=$("mtt");
+    function place(e){
+      var rect=box.getBoundingClientRect();
+      var x=e.clientX-rect.left, y=e.clientY-rect.top;
+      var tw=tt.offsetWidth, th=tt.offsetHeight;
+      var L=x+14; if(L+tw>box.clientWidth-4) L=x-14-tw; if(L<4) L=4;
+      var T=y+14; if(T+th>box.clientHeight-4) T=y-14-th; if(T<4) T=4;
+      tt.style.left=L+"px"; tt.style.top=T+"px";
+    }
+    box.addEventListener("mousemove", function(e){ if(tt.classList.contains("show")) place(e); });
+    Array.prototype.forEach.call(box.querySelectorAll("circle.dot"), function(c){
+      c.addEventListener("mouseenter", function(e){
+        var it=MATRIX.ideas[+c.getAttribute("data-i")]; if(!it) return;
+        tt.innerHTML='<div class="tt-title">'+escapeHtml(it.title)+'</div>'+
+          (it.desc?'<div class="tt-desc">'+escapeHtml(it.desc)+'</div>':'')+
+          '<div class="tt-meta">Speed '+it.avgS.toFixed(1)+' \u00b7 Impact '+it.avgI.toFixed(1)+' \u00b7 '+it.n+' vote'+(it.n===1?'':'s')+'</div>';
+        tt.classList.add("show"); place(e);
+      });
+      c.addEventListener("mouseleave", function(){ tt.classList.remove("show"); });
+      c.addEventListener("click", function(){ selectIdea(+c.getAttribute("data-i")); });
+    });
+  }
+
+  function attachRankEvents(){
+    Array.prototype.forEach.call(document.querySelectorAll("#matrix-body .rankrow"), function(row){
+      row.addEventListener("click", function(){ selectIdea(+row.getAttribute("data-i")); });
+    });
+  }
+
+  function selectIdea(i){
+    var it=MATRIX.ideas[i]; if(!it) return;
+    MATRIX.selectedKey=it.key;
+    renderMatrix();
+    var sc=document.querySelector("#matrix-body .selectedcard");
+    if(sc && sc.scrollIntoView) sc.scrollIntoView({behavior:"smooth", block:"center"});
+  }
+
+  $("go-matrix").addEventListener("click", function(){ show("matrix"); loadMatrix(); });
 
 })();
 </script>
